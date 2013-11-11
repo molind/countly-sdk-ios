@@ -185,10 +185,11 @@ static int const kOpenUDIDRedundancySlots = 100;
     NSString * appUID = (NSString *) [defaults objectForKey:kOpenUDIDAppUIDKey];
     if(appUID == nil)
     {
-      // generate a new uuid and store it in user defaults
-      CFUUIDRef uuid = CFUUIDCreate(NULL);
-      appUID = (NSString *) CFUUIDCreateString(NULL, uuid);
-      CFRelease(uuid);
+        // generate a new uuid and store it in user defaults
+        CFUUIDRef uuid = CFUUIDCreate(NULL);
+        appUID = (NSString *) CFUUIDCreateString(NULL, uuid);
+        [appUID autorelease];
+        CFRelease(uuid);
     }
   
     NSString* openUDID = nil;

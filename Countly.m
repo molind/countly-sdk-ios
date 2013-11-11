@@ -181,7 +181,7 @@
 {
 }
 
-@property (nonatomic, copy) NSString *key;
+@property (nonatomic, retain) NSString *key;
 @property (nonatomic, retain) NSDictionary *segmentation;
 @property (nonatomic, assign) int count;
 @property (nonatomic, assign) double sum;
@@ -314,7 +314,7 @@
         event.timestamp = ((NSNumber*) [managedObject valueForKey:@"timestamp"]).doubleValue;
     if ([managedObject valueForKey:@"segmentation"])
         event.segmentation = [managedObject valueForKey:@"segmentation"];
-    return event;
+    return [event autorelease];
 }
 
 - (void)recordEvent:(NSString *)key count:(int)count
@@ -506,8 +506,10 @@ static ConnectionQueue *s_sharedConnectionQueue = nil;
 {
     NSArray* dataQueue = [[[CountlyDB sharedInstance] getQueue] copy];
     
-    if (connection_ != nil || bgTask_ != UIBackgroundTaskInvalid || [dataQueue count] == 0)
+    if (connection_ != nil || bgTask_ != UIBackgroundTaskInvalid || [dataQueue count] == 0) {
+        [dataQueue release];
         return;
+    }
     
     UIApplication *app = [UIApplication sharedApplication];
     bgTask_ = [app beginBackgroundTaskWithExpirationHandler:^{
