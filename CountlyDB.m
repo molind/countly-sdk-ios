@@ -38,6 +38,8 @@
     [_managedObjectContext release];
     [_managedObjectModel release];
     [_persistentStoreCoordinator release];
+    self.dbPath = nil;
+    
     [super dealloc];
 }
 
@@ -186,7 +188,7 @@
         return _persistentStoreCoordinator;
     }
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Countly.sqlite"];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:_dbPath?_dbPath:@"Countly.sqlite"];
 
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
